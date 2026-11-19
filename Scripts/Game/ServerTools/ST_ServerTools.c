@@ -60,11 +60,4 @@ modded class SCR_BaseGameMode
 			Print(string.Format("[ServerTools]   - %1 (id %2, reapariciones: %3)", pm.GetPlayerName(id), id, m_mST_SpawnCount.Get(id)), LogLevel.NORMAL);
 		}
 	}
-
-	//------------------------------------------------------------------------------------------------
-	void ~SCR_BaseGameMode()
-	{
-		if (GetGame() && GetGame().GetCallqueue())
-			GetGame().GetCallqueue().Remove(ST_PrintStatus);
-	}
 }

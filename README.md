@@ -7,6 +7,7 @@ Pequeño mod en Enforce Script + configuración de servidor dedicado.
 | Archivo | Qué hace |
 |---|---|
 | `Scripts/Game/ServerTools/ST_ServerTools.c` | Registra en el log del servidor las conexiones y reapariciones de cada jugador, y cada 5 minutos imprime la lista de jugadores conectados. |
+| `Scripts/Game/ServerTools/ST_NameTags.c` | Muestra el nombre (y la distancia) de los jugadores encima de su cabeza. Por defecto solo aliados, hasta 60 m y sin ver a través de paredes. Los ajustes están al principio del archivo. |
 | `server/config.json` | Configuración de ejemplo para un servidor dedicado (Conflict en Everon, 32 jugadores). |
 
 ## Usar el mod

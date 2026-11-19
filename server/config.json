@@ -1,0 +1,35 @@
+{
+	"bindAddress": "",
+	"bindPort": 2001,
+	"publicAddress": "",
+	"publicPort": 2001,
+	"a2s": {
+		"address": "0.0.0.0",
+		"port": 17777
+	},
+	"game": {
+		"name": "Mi Servidor Arma Reforger",
+		"password": "",
+		"passwordAdmin": "CAMBIA_ESTA_CLAVE",
+		"admins": [],
+		"scenarioId": "{ECC61978EDCC2B5A}Missions/23_Campaign.conf",
+		"maxPlayers": 32,
+		"visible": true,
+		"crossPlatform": true,
+		"supportedPlatforms": ["PLATFORM_PC", "PLATFORM_XBL", "PLATFORM_PSN"],
+		"gameProperties": {
+			"serverMaxViewDistance": 2500,
+			"serverMinGrassDistance": 50,
+			"networkViewDistance": 1500,
+			"disableThirdPerson": false,
+			"fastValidation": true,
+			"battlEye": true,
+			"VONDisableUI": false,
+			"VONDisableDirectSpeechUI": false
+		},
+		"mods": []
+	},
+	"operating": {
+		"lobbyPlayerSynchronise": true
+	}
+}

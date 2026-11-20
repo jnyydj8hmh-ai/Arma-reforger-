@@ -1,0 +1,12 @@
+{
+	// Enforce Script (Arma Reforger) se parece a C#: así se ve con colores
+	"files.associations": {
+		"*.c": "csharp"
+	},
+	"editor.insertSpaces": false,
+	"editor.tabSize": 4,
+	"files.encoding": "utf8",
+	// Evita que VS Code marque errores falsos de C#
+	"dotnet.backgroundAnalysis.analyzerDiagnosticsScope": "none",
+	"dotnet.backgroundAnalysis.compilerDiagnosticsScope": "none"
+}

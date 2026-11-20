@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mi ubicación</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font-family: system-ui, Arial, sans-serif;
+    margin: 0; padding: 16px;
+    background: #f4f5f7; color: #1a1a1a;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { background: #16181d; color: #e8e8e8; }
+    .caja { background: #22252c; }
+  }
+  .caja {
+    max-width: 640px; margin: 0 auto; background: #fff;
+    border-radius: 12px; padding: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.12);
+  }
+  h1 { font-size: 20px; margin: 0 0 6px; }
+  p.sub { margin: 0 0 16px; opacity: .75; font-size: 14px; }
+  button {
+    font-size: 16px; padding: 12px 20px; border: 0; border-radius: 8px;
+    background: #2f6df6; color: #fff; cursor: pointer;
+  }
+  button:hover { background: #255ad1; }
+  #mapa { height: 320px; border-radius: 10px; margin-top: 16px; display: none; }
+  .datos { margin-top: 14px; font-size: 14px; line-height: 1.6; display: none; }
+  .datos b { display: inline-block; width: 110px; }
+  .aviso { margin-top: 14px; font-size: 13px; opacity: .7; }
+  .error { color: #d23; margin-top: 12px; }
+</style>
+</head>
+<body>
+  <div class="caja">
+    <h1>📍 Ver mi ubicación</h1>
+    <p class="sub">Al pulsar el botón, tu navegador te pedirá permiso. Si aceptas,
+       verás tu ubicación aquí. Los datos no salen de tu dispositivo.</p>
+
+    <button id="btn">Compartir mi ubicación</button>
+
+    <div id="error" class="error"></div>
+
+    <div class="datos" id="datos">
+      <div><b>Latitud:</b> <span id="lat">—</span></div>
+      <div><b>Longitud:</b> <span id="lon">—</span></div>
+      <div><b>Precisión:</b> <span id="prec">—</span></div>
+      <div><b>Hora:</b> <span id="hora">—</span></div>
+    </div>
+
+    <div id="mapa"></div>
+
+    <p class="aviso">Esta página solo funciona con tu permiso. Cierra la pestaña
+       para dejar de compartir tu ubicación.</p>
+  </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+  var mapa, marcador;
+
+  document.getElementById("btn").addEventListener("click", function () {
+    var err = document.getElementById("error");
+    err.textContent = "";
+
+    if (!navigator.geolocation) {
+      err.textContent = "Tu navegador no permite obtener la ubicación.";
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(mostrar, fallo, {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0
+    });
+  });
+
+  function mostrar(pos) {
+    var lat = pos.coords.latitude;
+    var lon = pos.coords.longitude;
+    var prec = Math.round(pos.coords.accuracy);
+
+    document.getElementById("lat").textContent = lat.toFixed(6);
+    document.getElementById("lon").textContent = lon.toFixed(6);
+    document.getElementById("prec").textContent = prec + " metros aprox.";
+    document.getElementById("hora").textContent = new Date().toLocaleString();
+    document.getElementById("datos").style.display = "block";
+
+    var m = document.getElementById("mapa");
+    m.style.display = "block";
+
+    if (!mapa) {
+      mapa = L.map("mapa").setView([lat, lon], 16);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap"
+      }).addTo(mapa);
+      marcador = L.marker([lat, lon]).addTo(mapa);
+    } else {
+      mapa.setView([lat, lon], 16);
+      marcador.setLatLng([lat, lon]);
+    }
+    marcador.bindPopup("Estás aquí (±" + prec + " m)").openPopup();
+    setTimeout(function () { mapa.invalidateSize(); }, 200);
+  }
+
+  function fallo(e) {
+    var err = document.getElementById("error");
+    if (e.code === 1) err.textContent = "No diste permiso para la ubicación.";
+    else if (e.code === 2) err.textContent = "No se pudo determinar la ubicación.";
+    else if (e.code === 3) err.textContent = "Se agotó el tiempo de espera.";
+    else err.textContent = "Error al obtener la ubicación.";
+  }
+</script>
+</body>
+</html>
